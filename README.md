@@ -1,2 +1,3 @@
 This script, when run on a Microsoft Teams Room (MTR) System, will configure a new, randomly selected wallpaper, each day. The script pics the wallpaper from a folder, copies it to the appropriate folder, then writes a SkypeSettings.xml file that contains the relevant configuration info. MTRs have a built in process that includes a daily reboot. New-MtrWallpaper.ps1 leverages that reboot to enable the new wallpaper.
+You can manually run the code in Create-MtrWallpaperScheduledTask.ps1 to create the actual scheduled task if desired.
 Please see the article at https://www.ucunleashed.com/4323 for information on this script.
