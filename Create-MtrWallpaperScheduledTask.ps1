@@ -16,5 +16,3 @@ $Credentials = New-Object System.Management.Automation.PSCredential -ArgumentLis
 $Password = $Credentials.GetNetworkCredential().Password 
 
 $null = Register-ScheduledTask -Action $action -Trigger $trigger -Settings $Settings -TaskName "Rotate MTR Wallpaper" -TaskPath "\Microsoft\Skype" -Description "This script randomly pics a new wallpaper, copies it to a folder, then write the require SkypeSettings.xml file for the MTR to use to configure the new wallpaper. For more information on the New-MtrWallpaper.ps1 script that is run, see https://www.ucunleashed.com/4323." -User $UserName -Password $Password
-
-Start-ScheduledTask -TaskName 'Rotate MTR Wallpaper' -TaskPath '\Microsoft\Skype'
