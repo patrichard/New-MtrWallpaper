@@ -1,0 +1,17 @@
+# All Images are ignored
+# Mostly because I have no idea if the license allows me to distribute then!
+# Will check that and add some in the future
+
+# JPEG
+*.jpg
+*.JPG
+*.jpeg
+*.JPEG
+
+# Portable Network Graphics
+.png
+.PNG
+
+# BMP
+.bmp
+.BMP
