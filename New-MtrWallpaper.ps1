@@ -35,10 +35,6 @@
          The MTR will reboot every day at 2:30 (AM), then the changes will be activated.
 
          The MTR support .jpg, .jpeg, .png, and .bmp for wallpapers!
-         This script supports only .jpg for now!
-         A future version might bring support for other formats,
-         until then you need to use JPG (.jpg).
-         Tell me if you are interested in such an enhancement!
 
          My version of the script has no enhancements, at least not yet!
          It's just a minor changed version based on the great work of Pat Richard.
@@ -59,11 +55,11 @@
          https://www.bing.com/images/search?q=wallpaper+3840x1080&qpvt=wallpaper+3840x1080&form=IGRE&first=1&cw=1680&ch=939
    #>
    [CmdletBinding(ConfirmImpact = 'None',
-                  SupportsShouldProcess)]
+   SupportsShouldProcess)]
    param
    (
       [Parameter(ValueFromPipeline,
-                 ValueFromPipelineByPropertyName)]
+      ValueFromPipelineByPropertyName)]
       [ValidateNotNullOrEmpty()]
       [Alias('ThisRoot')]
       [string]
@@ -73,6 +69,7 @@
    begin
    {
       #region Defaults
+      $STP = 'Stop'
       $CNT = 'Continue'
       $SCT = 'SilentlyContinue'
       #endregion Defaults
@@ -85,11 +82,12 @@
 
          # Get a list of all of the wallpapers to choose from. Wallpaper images MUST be exactly 3840x1080, regardless if the MTR is a single or dual screen system.
          $paramGetChildItem = @{
-            Path		   = ($Path + '\Wallpapers')
-            Filter	   = '*.jpg'
-            ErrorAction = 'Stop'
+            Path        = ($Path + '\Wallpapers')
+            ErrorAction = $STP
          }
-         $AllWallpapers = (Get-ChildItem @paramGetChildItem | Select-Object -ExpandProperty Name)
+         $AllWallpapers = (Get-ChildItem @paramGetChildItem | Where-Object -FilterScript {
+               $_.Extension -in '.jpg', '.jpeg', '.png', '.bmp'
+         } | Select-Object -Property Name, Extension)
 
          # Prevent any futher action if there are no files (wallpapers)
          if (-not ($AllWallpapers))
@@ -103,7 +101,7 @@
          # Create the String, just for the error message
          [string]$NewWallpaperPath = ($Path + '\Wallpapers')
 
-         Write-Error -Message ('No wallpapers where found in {0}' -f $NewWallpaperPath) -Exception 'No wallpapers where found' -Category ObjectNotFound -RecommendedAction 'Check given path' -ErrorAction Stop
+         Write-Error -Message ('No wallpapers where found in {0}' -f $NewWallpaperPath) -Exception 'No wallpapers where found' -Category ObjectNotFound -RecommendedAction 'Check given path' -ErrorAction $STP
 
          # Just in case
          exit 1
@@ -116,14 +114,17 @@
       # Files to remove
       $FileToCleanup = @(
          'wallpaper.jpg'
+         'wallpaper.jpeg'
+         'wallpaper.png'
+         'wallpaper.bmp'
          'SkypeSettings.xml'
       )
 
       # Default parameters
       $paramRemoveItem = @{
-         Force		   = $true
-         Confirm	   = $false
-         ErrorAction = $SCT
+         Force         = $true
+         Confirm       = $false
+         ErrorAction   = $SCT
          WarningAction = $SCT
       }
 
@@ -154,27 +155,31 @@
             Keep in mind that the fewer images to choose from,
             the higher the potential to choose the same image that was used last time.
       #>
-      [string]$NewWallpaper = (Get-Random -InputObject $AllWallpapers)
+      $NewWallpaper = (Get-Random -InputObject $AllWallpapers)
 
       Write-Verbose -Message ('Chosen wallpaper is ' + $Path + '\Wallpapers\' + $NewWallpaper)
 
-#region NewWallpaper
+      #region NewWallpaper
       if ($NewWallpaper)
       {
+         # New Variables to support all extensions
+         $NewWallpaperName = $NewWallpaper.Name
+         $NewWallpaperFilename = ('wallpaper' + $NewWallpaper.Extension)
+
          # Copy the chosen wallpaper to the right folder. We rename it to a generic name as a safeguard against improper characters or file names that are too long.
          $paramCopyItem = @{
-            Path		   = ($Path + '\Wallpapers\' + $NewWallpaper)
-            Destination   = ($Path + '\wallpaper.jpg')
-            Force		     = $true
-            Confirm		  = $false
-            ErrorAction = $CNT
+            Path          = ($Path + '\Wallpapers\' + $NewWallpaperName)
+            Destination   = ($Path + '\' + $NewWallpaperFilename)
+            Force         = $true
+            Confirm       = $false
+            ErrorAction   = $CNT
             WarningAction = $CNT
          }
          $null = (Copy-Item @paramCopyItem)
 
          # Create the new SkypeSettings.xml using only the fields we need to populate to configure the new wallpaper
          $paramNewObject = @{
-            TypeName	    = 'System.XMl.XmlTextWriter'
+            TypeName     = 'System.XMl.XmlTextWriter'
             ArgumentList = (($Path + '\SkypeSettings.xml'), $null)
          }
          $xmlWriter = (New-Object @paramNewObject)
@@ -187,7 +192,7 @@
          $xmlWriter.WriteStartElement('SkypeSettings')
          $xmlWriter.WriteStartElement('Theming')
          $xmlWriter.WriteElementString('ThemeName', 'Custom')
-         $xmlWriter.WriteElementString('CustomThemeImageUrl', 'wallpaper.jpg')
+         $xmlWriter.WriteElementString('CustomThemeImageUrl', $NewWallpaperFilename)
          $xmlWriter.WriteStartElement('CustomThemeColor')
 
          # Review the Color Settings!
