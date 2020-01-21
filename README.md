@@ -18,15 +18,16 @@ If you copy the wallpaper image (wallpaper.jpg), with or without the settings XM
 The MTR doesn't do a reload or check if a file is changed.
 The MTR will reboot every day at 2:30 (AM), then the changes will be activated.
 
-The MTR support .jpg, .jpeg, .png, and .bmp for wallpapers!
+The MTR support .jpg, .jpeg, .png, and .bmp for wallpapers. Since version 1.0.1 of `New-MtrWallpaper` we support them all.
 
-**This script supports only .jpg for now!**
-
-A future version might bring support for other formats, until then you need to use JPG (.jpg).
-Tell me if you are interested in such an enhancement!
-
-My version of the script has no enhancements, at least not yet!
 It's just a minor changed version based on the great work of Pat Richard.
+
+### Changelog
+
+1.0.3 Add more parmeters (e.g. check resolution, and Template coloring)
+1.0.2 Add the Check (resolution) helper function: `Test-MtrWallpaper`
+1.0.1 Add support for all supported wallpaper Types (based on extensions)
+1.0.0 Fork from [Pat Richard](https://github.com/patrichard/New-MtrWallpaper)'s `New-MtrWallpaper`
 
 ## Original Author
 
