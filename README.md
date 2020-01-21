@@ -12,7 +12,7 @@ When the system reboots as part of its normal scheduled nightly maintenance, the
 
 None for now. May play with configuring a list of dates and corresponding wallpaper images (*think holiday wallpapers*).
 
-All Images _must_ be exactly 3840×1080, for Single or dual screen MTR systems!!!
+All Images _must_ be exactly 3840×1080, for Single or dual screen MTR systems!!! We have a (optional) check parameter for that!
 
 If you copy the wallpaper image (wallpaper.jpg), with or without the settings XML, to different MTR systems the change will not be activated!
 The MTR doesn't do a reload or check if a file is changed.
@@ -22,12 +22,23 @@ The MTR support .jpg, .jpeg, .png, and .bmp for wallpapers. Since version 1.0.1 
 
 It's just a minor changed version based on the great work of Pat Richard.
 
-### Changelog
+## Changelog
 
-1.0.3 Add more parmeters (e.g. check resolution, and Template coloring)
-1.0.2 Add the Check (resolution) helper function: `Test-MtrWallpaper`
-1.0.1 Add support for all supported wallpaper Types (based on extensions)
-1.0.0 Fork from [Pat Richard](https://github.com/patrichard/New-MtrWallpaper)'s `New-MtrWallpaper`
+### 1.0.3
+
+Add more parmeters (e.g. check resolution, and Template coloring)
+
+### 1.0.2
+
+Add the Check (resolution) helper function: `Test-MtrWallpaper`
+
+### 1.0.1
+
+Add support for all supported wallpaper Types (based on extensions)
+
+### 1.0.0
+
+Fork from [Pat Richard](https://github.com/patrichard/New-MtrWallpaper)'s `New-MtrWallpaper`
 
 ## Original Author
 
