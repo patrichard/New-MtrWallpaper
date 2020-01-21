@@ -8,6 +8,10 @@
 *.jpeg
 *.JPEG
 
+# Gif Files
+*.gif
+*.GIF
+
 # Portable Network Graphics
 .png
 .PNG
