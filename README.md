@@ -26,8 +26,8 @@ It's just a minor changed version based on the great work of Pat Richard.
 
 ### 1.0.4
 
-Fixed the Color parameters (Range was 0-100, should be, and now iw is, 0-255)
-Add some more description for futher customization, with a few examples
+Fixed the Color parameters (Range was 0-100, should be, and now is is, 0-255)
+Add some more description for further customisation, with a few examples
 
 ### 1.0.3
 
