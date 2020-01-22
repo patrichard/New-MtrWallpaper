@@ -40,7 +40,8 @@
          Picks a random image, copies to the root folder, and writes XML file
 
          .NOTES
-         None for now. May play with configuring a list of dates and corresponding wallpaper images (think holiday wallpapers).
+         In the code you will find some exaples for more customization. Not scope of this script, but possible.
+         Please see: https://docs.microsoft.com/en-us/MicrosoftTeams/room-systems/xml-config-file
 
          All Images must be exactly 3840×1080, for Single or dual screen!
 
@@ -62,6 +63,9 @@
 
          .LINK
          https://docs.microsoft.com/en-us/MicrosoftTeams/downloads/ThemingTemplateMicrosoftTeamsRooms_v2.1.psd
+
+         .LINK
+         https://docs.microsoft.com/en-us/MicrosoftTeams/room-systems/xml-config-file
 
          .LINK
          https://www.ucit.blog/post/configuring-custom-themes-for-microsoft-teams-skype-room-systems
@@ -86,19 +90,19 @@
       $Check,
       [Parameter(ValueFromPipeline,
       ValueFromPipelineByPropertyName)]
-      [ValidateRange(0, 100)]
+      [ValidateRange(0, 255)]
       [Alias('Red')]
       [int]
       $RedComponent = 100,
       [Parameter(ValueFromPipeline,
       ValueFromPipelineByPropertyName)]
-      [ValidateRange(0, 100)]
+      [ValidateRange(0, 255)]
       [Alias('Green')]
       [int]
       $GreenComponent = 100,
       [Parameter(ValueFromPipeline,
       ValueFromPipelineByPropertyName)]
-      [ValidateRange(0, 100)]
+      [ValidateRange(0, 255)]
       [Alias('Blue')]
       [int]
       $BlueComponent = 100
@@ -304,7 +308,11 @@
          }
          $null = (Copy-Item @paramCopyItem)
 
-         # Create the new SkypeSettings.xml using only the fields we need to populate to configure the new wallpaper
+         <#
+               Create the new SkypeSettings.xml using only the fields we need to populate to configure the new wallpaper
+               More configuration is possible: https://docs.microsoft.com/en-us/MicrosoftTeams/room-systems/xml-config-file
+               You get the idea...
+         #>
          $paramNewObject = @{
             TypeName     = 'System.XMl.XmlTextWriter'
             ArgumentList = (($Path + '\SkypeSettings.xml'), $null)
@@ -317,6 +325,50 @@
 
          $xmlWriter.WriteStartDocument()
          $xmlWriter.WriteStartElement('SkypeSettings')
+
+         <#
+               Other Setting can be placed here, here are a few examples:
+
+               $xmlWriter.WriteElementString('DualScreenMode', $true)
+               $xmlWriter.WriteElementString('IsTeamsDefaultClient', $true)
+               $xmlWriter.WriteElementString('BluetoothAdvertisementEnabled', $true)
+
+               Please Note: If you want to configure the Devices (<Devices>), you need to add this to a container:
+
+               # Open Devices
+               $xmlWriter.WriteStartElement('Devices')
+               # Add the config to Devices
+               $xmlWriter.WriteElementString('MicrophoneForCommunication', 'Microsoft LifeChat LX-6000')
+               $xmlWriter.WriteElementString('SpeakerForCommunication', 'Realtek High Definition Audio')
+               $xmlWriter.WriteElementString('DefaultSpeaker', 'Polycom CX5100')
+               # Close Devices
+               $xmlWriter.WriteEndElement()
+
+               Same applies to: UserAccount (<UserAccount>):
+               # Open UserAccount
+               $xmlWriter.WriteStartElement('UserAccount')
+               # Add the config to UserAccount
+               $xmlWriter.WriteElementString('SkypeSignInAddress', 'RanierConf@contoso.com')
+               $xmlWriter.WriteElementString('ExchangeAddress', 'RanierConf@contoso.com')
+               $xmlWriter.WriteElementString('DomainUsername', 'Seattle\RanierConf')
+               $xmlWriter.WriteElementString('Password', 'password')
+               $xmlWriter.WriteElementString('ConfigureDomain', 'domain1, domain2')
+               # Close UserAccount
+               $xmlWriter.WriteEndElement()
+
+               It also applies to SendLogs (<SendLogs>):
+               # Open SendLogs
+               $xmlWriter.WriteStartElement('SendLogs')
+               # Add the config to SendLogs
+               $xmlWriter.WriteElementString('EmailAddressForLogsAndFeedback', 'RanierConf@contoso.com')
+               $xmlWriter.WriteElementString('SendLogsAndFeedback', $true)
+               # Close SendLogs
+               $xmlWriter.WriteEndElement()
+
+               You might want to add some parameters for them above!
+         #>
+
+         # Theming starts here
          $xmlWriter.WriteStartElement('Theming')
          $xmlWriter.WriteElementString('ThemeName', 'Custom')
          $xmlWriter.WriteElementString('CustomThemeImageUrl', $NewWallpaperFilename)

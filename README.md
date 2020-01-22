@@ -24,6 +24,11 @@ It's just a minor changed version based on the great work of Pat Richard.
 
 ## Changelog
 
+### 1.0.4
+
+Fixed the Color parameters (Range was 0-100, should be, and now iw is, 0-255)
+Add some more description for futher customization, with a few examples
+
 ### 1.0.3
 
 Add more parmeters (e.g. check resolution, and Template coloring)
@@ -42,11 +47,11 @@ Fork from [Pat Richard](https://github.com/patrichard/New-MtrWallpaper)'s `New-M
 
 ## Original Author
 
-[Pat Richard](https://github.com/patrichard/New-MtrWallpaper)
+[Pat Richard](https://github.com/patrichard/)
 
 ## License
 
-Ask [Pat Richard](https://github.com/patrichard/New-MtrWallpaper) :-)
+Ask [Pat Richard](https://github.com/patrichard/) :-)
 
 As soon as Pat uploads a valid license to the repo, I will adopt it here.
 
